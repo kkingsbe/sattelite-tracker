@@ -61,7 +61,7 @@ function getCurrentLatLong(name) {
     var longitudeStr = satellite.degreesLong(longitude),
         latitudeStr  = satellite.degreesLat(latitude)
 
-    console.log(longitudeStr)
+    //console.log(longitudeStr)
     
     return {lat: latitudeStr, long: longitudeStr, height: height}
   } catch(e) {

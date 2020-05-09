@@ -48,18 +48,37 @@ function drawSatellite(name) {
   }
 
   //If we have gotten to this point, the satellite has not yet been drawn
-  console.log("Making new marker")
+  //console.log("Making new marker")
   let pos = getCurrentLatLong(name)
 
   let featureLayer = getFeatureLayer()
 
-  console.log(featureLayer)
+  //console.log(featureLayer)
   let marker = new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.fromLonLat([pos.long, pos.lat])),
     name: name
   })
+  marker.style = {
+    label : name,
+    pointRadius: 10,
+    fillColor: "#ffcc66",
+    fillOpacity: 0.8,
+    strokeColor: "#cc6633",
+    strokeWidth: 2,
+    strokeOpacity: 0.8
+  }
   markers.push(marker)
   featureLayer.getSource().addFeature(marker)
+}
+
+/* description: Runs drawSatellite() for every satellite in the dataset
+ */
+function drawAllSatellites() {
+  tleArr.forEach(tle => {
+    try{
+      drawSatellite(tle.name)
+    } catch {}
+  })
 }
 
 /* description: Updates the position of an existing satellite marker
@@ -68,17 +87,26 @@ function drawSatellite(name) {
 function updateSatellite(name) {
   //If we have gotten to this point, the satellite has not yet been drawn
   let pos = getCurrentLatLong(name)
-  console.log(pos)
+  //console.log(pos)
   let featureLayer = getFeatureLayer()
   let marker = getMarker(name)
   featureLayer.getSource().removeFeature(marker)
   marker.setGeometry(new ol.geom.Point(ol.proj.fromLonLat([pos.long, pos.lat])))
+  marker.style = {
+    label : name,
+    pointRadius: 10,
+    fillColor: "#ffcc66",
+    fillOpacity: 0.8,
+    strokeColor: "#cc6633",
+    strokeWidth: 2,
+    strokeOpacity: 0.8
+  }
   featureLayer.getSource().addFeature(marker)
-  console.log(marker)
 }
 
 createMap()
 
 setInterval(() => {
-  drawSatellite("ISS (ZARYA)")
+  //drawSatellite("ISS (ZARYA)")
+  drawAllSatellites()
 }, 1000)
